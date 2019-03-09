@@ -38,20 +38,21 @@ client.connect();
  exports.transaction_create_post = function(req, res) {
     // Get posted data from request body 
     const {
-        CustomerID,
-        CustomerQRCode,
-        Price,
+        pubkey,
+        customerqrcode,
+        price,
         cupqrcode,
-        InsertTime
+        inserttime,
+        signature
      } = req.body;
 
      // Insert all given entries into Transaction table
-     client.query('INSERT INTO transactions("CustomerID", customerqrcode, "Price", "CupQRCode", "InsertTime")' +
-                'VALUES ($1, $2, $3, $4, $5)', [CustomerID, CustomerQRCode, Price, cupqrcode, InsertTime], (error, results) => {
+     client.query('INSERT INTO transactions(pubkey, customerqrcode, price, cupqrcode, inserttime, signature)' +
+                'VALUES ($1, $2, $3, $4, $5, $6)', [pubkey, customerqrcode, price, cupqrcode, inserttime, signature], (error, results) => {
                     if(error) {
                         throw error;
                     }
-                    res.status(201).send('Transaction added for for customer QR code: ' + CustomerQRCode);
+                    res.status(201).send('Transaction added for for customer QR code: ' + customerqrcode);
                 })
  };
 
@@ -60,16 +61,16 @@ client.connect();
     // Get posted data from request body 
     const customerqrcode = req.params.id;
     const {
-        CustomerID,
-        customerQRcode,
-        Price,
+        pubkey,
+        price,
         cupqrcode,
-        InsertTime
+        inserttime,
+        signature
      } = req.body;
 
     client.query('UPDATE transactions SET' + 
-                '"CustomerID" = $1, customerqrcode = $2, "Price" = $3, "CupQRCode" = $4, "InsertTime" = $5', 
-                [CustomerID, customerQRcode, Price, cupqrcode, InsertTime], (error, resulsts) => {
+                'pubkey = $1, customerqrcode = $2, price = $3, cupqrcode = $4, inserttime = $5', signature = $6, 
+                [pubkey, customerqrcode, price, cupqrcode, inserttime, signature], (error, results) => {
                     if(error) {
                         throw error;
                     }
