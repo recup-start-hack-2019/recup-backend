@@ -133,7 +133,8 @@ client.connect();
         receiverPublicKey: customerpubkey,
         timestamp: timestamp,
         cupqrcode: cupqrcode,
-        previousHash: userRequestHash // previous hash as well
+        previousHash: userRequestHash,  // previous hash as well
+        type: transactionTypes.SHOP_DELIVER
     }, 'SHA256', 'hex'), 'hex');
     
     console.log(JSum.digest(hash, 'SHA256', 'hex'));
@@ -145,7 +146,7 @@ client.connect();
     //Do push notification here if everything is ok
 
     try {
-        await pushNotification(shoppubkey, customerpubkey, timestamp, cupqrcode, hash, signature);    
+        await pushNotification(shoppubkey, customerpubkey, timestamp, cupqrcode, hash, signature, type);    
 
         // Insert all given entries into Transaction table
         client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiver, previoushash, type)' +
@@ -153,10 +154,10 @@ client.connect();
             if(error) {
                 throw error;
             }
-            res.status(201).send('Transaction added for for cup: ' + cupqrcode);
+            res.status(201).json('Transaction added for for cup: ' + cupqrcode);
         });
     } catch(e) {
-        res.status(500).send(e);
+        res.status(500).json(e);
     }
     
  };
@@ -191,7 +192,7 @@ exports.transaction_accept_post = function(req, res) {
         new Buffer(customerpubkey, "hex"));
 
     // Stop if request is invalid
-    if(!requestValid) res.status(500).send("Request invalid");
+    if(!requestValid) res.status(500).json("Request invalid");
 
     //Do push notification here if everything is ok
     // todo: thanks notification
@@ -203,10 +204,10 @@ exports.transaction_accept_post = function(req, res) {
             if(error) {
                 throw error;
             }
-            res.status(201).send('Transaction accepted for cup: ' + cupqrcode + " by user: " + customerpubkey);
+            res.status(201).json('Transaction accepted for cup: ' + cupqrcode + " by user: " + customerpubkey);
         });
     } catch(e) {
-        res.status(500).send(e);
+        res.status(500).json(e);
     }
 };
 
@@ -234,14 +235,14 @@ exports.transaction_machine_accept = function(req, res) {
             if(error) {
                 throw error;
             }
-            res.status(201).send('Transaction closed for cup: ' + cupqrcode + " by machine.");
+            res.status(201).json('Transaction closed for cup: ' + cupqrcode + " by machine.");
         });
     });
 };
 
 exports.transaction_generate_hash = function(req, res) {
     console.log("POST JSUM request");
-    
+
     const {
         obj
     } = req.body;
@@ -250,10 +251,10 @@ exports.transaction_generate_hash = function(req, res) {
     console.log(hash);
 
     // Send back hash
-    res.status(201).send(hash);
+    res.status(201).json(hash);
 };
 
- async function pushNotification(senderPublicKey, receiverPublicKey, timestamp, cupqrcode, previousHash, signature) {
+ async function pushNotification(senderPublicKey, receiverPublicKey, timestamp, cupqrcode, previousHash, signature, type) {
 
     var options = {
         token: {
@@ -281,7 +282,8 @@ exports.transaction_generate_hash = function(req, res) {
             'cupqrcode': cupqrcode,
             'timestamp': timestamp,
             'previousHash': previousHash,
-            'signature': signature
+            'signature': signature,
+            'type': type
         }
     };
     note.topic = process.env.BUNDLE_ID;
