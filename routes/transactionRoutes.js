@@ -15,7 +15,13 @@ router.get('/get/:id', transactionController.transaction_details);
 // POST Create Transaction
 router.post('/create', transactionController.transaction_create_post);
 
-// POST Update Transaction
-router.post('/update/:id', transactionController.transaction_update_post);
+// POST Accept transaction
+router.post('/accept', transactionController.transaction_accept_post);
+
+// POST machine accept
+router.post('/machine_accept', transactionController.transaction_machine_accept);
+
+// POST hashbuilder
+router.post('/jsum', transactionController.transaction_generate_hash);
 
 module.exports = router;

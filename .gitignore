@@ -62,3 +62,6 @@ typings/
 
 # VSCode project files
 .vscode
+
+# .p8 files
+*.p8

@@ -21,7 +21,21 @@
     "nodemon": "^1.18.10"
   },
   "dependencies": {
+    "@grpc/proto-loader": "^0.3.0",
+    "@nodeutils/defaults-deep": "^1.1.0",
+    "apn": "^2.2.0",
+    "bigi": "^1.4.2",
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "bs58check": "^2.1.2",
+    "bytebuffer": "^5.0.1",
+    "create-hash": "^1.2.0",
+    "crypto": "^1.0.1",
+    "defaults-deep": "^0.2.4",
+    "ecurve": "^1.0.6",
+    "express": "^4.16.4",
+    "randombytes": "^2.1.0",
+    "secp256k1": "^3.5.0",
+    "typeforce": "^1.12.0",
+    "wif": "^2.0.6"
   }
 }

@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({
 
 // Simple index
 app.get('/', (req, res) => {
+    console.log("Index route has been called via GET");
     res.send('Peace. This is the ReCup backend.');
 });
 
@@ -27,5 +28,5 @@ app.get('/', (req, res) => {
 var transactionRouter = require('./routes/transactionRoutes');
 app.use('/transactions', transactionRouter);
 
-app.listen(port);
+app.listen(port, '0.0.0.0');
 console.log("ReCup backend server started on port " + port);
