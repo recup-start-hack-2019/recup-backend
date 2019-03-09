@@ -1,0 +1,26 @@
+{
+  "name": "recup-backend",
+  "version": "1.0.0",
+  "description": "RESTful backend for ReCup apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recup-start-hack-2019/recup-backend.git"
+  },
+  "author": "ReCup Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/recup-start-hack-2019/recup-backend/issues"
+  },
+  "homepage": "https://github.com/recup-start-hack-2019/recup-backend#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
