@@ -1,5 +1,5 @@
 /**
- * Controller for TRANSACTIONS
+ * Controller for transactions
  * Containing CRUD operations for each column
  */
 
@@ -14,7 +14,7 @@ client.connect();
 
  /* Display transactions */
  exports.transaction_list = function(req, res) {
-    client.query('SELECT * FROM "TRANSACTIONS"', (error, results) => {
+    client.query('SELECT * FROM transactions', (error, results) => {
         if(error) {
             throw error;
         }
@@ -26,7 +26,7 @@ client.connect();
  exports.transaction_details = function(req, res) {
      const customerqrcode = req.params.id;
 
-     client.query('SELECT * FROM "TRANSACTIONS" WHERE customerqrcode = $1', [customerqrcode], (error, results) => {
+     client.query('SELECT * FROM transactions WHERE customerqrcode = $1', [customerqrcode], (error, results) => {
          if(error) {
              throw error;
          }
@@ -36,23 +36,22 @@ client.connect();
 
  /* Create a new transaction with POST */
  exports.transaction_create_post = function(req, res) {
-     
     // Get posted data from request body 
     const {
-        customerID,
-        customerqrcode,
-        price,
-        cupQRcode,
+        CustomerID,
+        CustomerQRCode,
+        Price,
+        cupqrcode,
         InsertTime
      } = req.body;
 
      // Insert all given entries into Transaction table
-     client.query('INSERT INTO TRANSACTIONS(customerID, customerqrcode, price, cupQRcode, InsertTime)' +
-                'VALUES ($1, $2, $3, $4, $5)', [customerID, customerqrcode, price, cupQRcode, InsertTime], (error, results) => {
+     client.query('INSERT INTO transactions("CustomerID", customerqrcode, "Price", "CupQRCode", "InsertTime")' +
+                'VALUES ($1, $2, $3, $4, $5)', [CustomerID, CustomerQRCode, Price, cupqrcode, InsertTime], (error, results) => {
                     if(error) {
                         throw error;
                     }
-                    res.status(201).send('Transaction added for for customer QR code: ' + customerqrcode);
+                    res.status(201).send('Transaction added for for customer QR code: ' + CustomerQRCode);
                 })
  };
 
@@ -61,15 +60,16 @@ client.connect();
     // Get posted data from request body 
     const customerqrcode = req.params.id;
     const {
-        customerID,
-        price,
-        cupQRcode,
+        CustomerID,
+        customerQRcode,
+        Price,
+        cupqrcode,
         InsertTime
      } = req.body;
 
-    client.query('UPDATE TRANSACTIONS SET' + 
-                'customerID = $1, customerqrcode = $2, price = $3, cupQRcode = $4, InsertTime = $5', 
-                [customerID, customerqrcode, price, cupQRcode, InsertTime], (error, resulsts) => {
+    client.query('UPDATE transactions SET' + 
+                '"CustomerID" = $1, customerqrcode = $2, "Price" = $3, "CupQRCode" = $4, "InsertTime" = $5', 
+                [CustomerID, customerQRcode, Price, cupqrcode, InsertTime], (error, resulsts) => {
                     if(error) {
                         throw error;
                     }

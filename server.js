@@ -7,7 +7,16 @@ if(result.error) {
     throw result.error;
 }
 
+// Set port
 const port = process.env.PORT;
+
+// Init body-parser
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 
 // Simple index
 app.get('/', (req, res) => {
