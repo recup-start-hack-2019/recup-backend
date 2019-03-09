@@ -1,40 +1,36 @@
 /**
- * Controller for Transactions
+ * Controller for TRANSACTIONS
  * Containing CRUD operations for each column
  */
 
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Build db
-const Pool = require('pg').Pool;
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    db: process.env.DB_NAME,
-    password: process.env.DB_PW,
-    port: process.env.DB_PORT
-});
+// Do pg connection
+var pg = require('pg');
+var conString = `postgres://${process.env.DB_USER}:${process.env.DB_PW}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+var client = new pg.Client(conString);
+client.connect();
 
  /* Display transactions */
  exports.transaction_list = function(req, res) {
-    pool.query('SELECT * FROM Transactions', (error, results) => {
+    client.query('SELECT * FROM "TRANSACTIONS"', (error, results) => {
         if(error) {
             throw error;
         }
-        Response.status(200).json(results.rows);
+        res.status(200).json(results.rows);
     })
  };
 
  /* Show transaction details */
  exports.transaction_details = function(req, res) {
-     const customer_QRcode = req.params.id;
+     const customerqrcode = req.params.id;
 
-     pool.query('SELECT * FROM Transactions WHERE customer_QRcode = $1', [customer_QRcode], (error, results) => {
+     client.query('SELECT * FROM "TRANSACTIONS" WHERE customerqrcode = $1', [customerqrcode], (error, results) => {
          if(error) {
              throw error;
          }
-         Response.status(200).json(results.rows);
+         res.status(200).json(results.rows);
      })
  };
 
@@ -44,51 +40,39 @@ const pool = new Pool({
     // Get posted data from request body 
     const {
         customerID,
-        customer_QRcode,
+        customerqrcode,
         price,
-        cup_QRcode,
-        currentInsertTime
+        cupQRcode,
+        InsertTime
      } = req.body;
 
      // Insert all given entries into Transaction table
-     pool.query('INSERT INTO Transactions(customerID, customer_QRcode, price, cup_QRcode, currentInsertTime)' +
-                'VALUES ($1, $2, $3, $4, $5)', [customerID, customer_QRcode, price, cup_QRcode, currentInsertTime], (error, results) => {
+     client.query('INSERT INTO TRANSACTIONS(customerID, customerqrcode, price, cupQRcode, InsertTime)' +
+                'VALUES ($1, $2, $3, $4, $5)', [customerID, customerqrcode, price, cupQRcode, InsertTime], (error, results) => {
                     if(error) {
                         throw error;
                     }
-                    res.status(201).send('Transaction added for for customer QR code: ' + customer_QRcode);
+                    res.status(201).send('Transaction added for for customer QR code: ' + customerqrcode);
                 })
  };
 
  /* Update an existing transaction with POST */
  exports.transaction_update_post = function(req, res) {
     // Get posted data from request body 
-    const customer_QRcode = req.params.id;
+    const customerqrcode = req.params.id;
     const {
         customerID,
         price,
-        cup_QRcode,
-        currentInsertTime
+        cupQRcode,
+        InsertTime
      } = req.body;
 
-    pool.query('UPDATE Transactions SET' + 
-                'customerID = $1, customer_QRcode = $2, price = $3, cup_QRcode = $4, currentInsertTime = $5', 
-                [customerID, customer_QRcode, price, cup_QRcode, currentInsertTime], (error, resulsts) => {
+    client.query('UPDATE TRANSACTIONS SET' + 
+                'customerID = $1, customerqrcode = $2, price = $3, cupQRcode = $4, InsertTime = $5', 
+                [customerID, customerqrcode, price, cupQRcode, InsertTime], (error, resulsts) => {
                     if(error) {
                         throw error;
                     }
-                    res.status(200).send('Updated transaction with customer QR code: ' + customer_QRcode);
+                    res.status(200).send('Updated transaction with customer QR code: ' + customerqrcode);
                 });
- };
-
- /* Delete an transaction by parameter "Customer_QRcode" */
- exports.transaction_delete_post = function(req, res) {
-    const customer_QRcode = req.params.id;
-
-    pool.query('DELETE FROM Transactions WHERE customer_QRcode = $1', [customer_QRcode], (error, resulsts) => {
-        if(error) {
-            throw error;
-        }
-        res.status(200).send('Deleted transactions with customer QR code:' + customer_QRcode);
-    })
  };

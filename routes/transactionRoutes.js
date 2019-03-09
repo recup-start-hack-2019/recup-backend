@@ -18,7 +18,4 @@ router.post('/create', transactionController.transaction_create_post);
 // POST Update Transaction
 router.post('/update/:id', transactionController.transaction_update_post);
 
-// POST Delete Transaction
-router.post('/delete/:id', transactionController.transaction_delete_post);
-
 module.exports = router;
