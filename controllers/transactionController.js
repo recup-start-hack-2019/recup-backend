@@ -109,7 +109,8 @@ client.connect();
         customerpubkey,
         customersignature,
         cupqrcode,
-        timestamp
+        timestamp,
+        type
     } = req.body;
 
     var userRequestHash = JSum.digest({
