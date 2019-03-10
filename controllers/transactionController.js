@@ -154,7 +154,7 @@ client.connect();
 
         // Insert all given entries into Transaction table
         client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiverpubkey, previoushash, type)' +
-        'VALUES ($1, $2, $3, $4, $5, $6, $7)', [shoppubkey, cupqrcode, timestamp, signature, customerpubkey, hash, transactionTypes.SHOP_DELIVER], (error, results) => {
+        'VALUES ($1, $2, $3, $4, $5, $6, $7)', [shoppubkey, cupqrcode, timestamp, signature, customerpubkey, hash.toString('hex'), transactionTypes.SHOP_DELIVER], (error, results) => {
             if(error) {
                 throw error;
             }
