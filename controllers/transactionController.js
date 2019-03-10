@@ -153,7 +153,7 @@ client.connect();
         await pushNotification(shoppubkey, customerpubkey, timestamp, cupqrcode, hash, signature, type);    
 
         // Insert all given entries into Transaction table
-        client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiver, previoushash, type)' +
+        client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiverpubkey, previoushash, type)' +
         'VALUES ($1, $2, $3, $4, $5, $6, $7)', [shoppubkey, cupqrcode, timestamp, signature, customerpubkey, hash, transactionTypes.SHOP_DELIVER], (error, results) => {
             if(error) {
                 throw error;
@@ -204,7 +204,7 @@ exports.transaction_accept_post = function(req, res) {
 
     try { 
         // Insert all given entries into Transaction table
-        client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiver, previoushash, type)' +
+        client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiverpubkey, previoushash, type)' +
         'VALUES ($1, $2, $3, $4, $5, $6, $7)', [shoppubkey, cupqrcode, timestamp, customersignature, customerpubkey, previousHash, transactionTypes.USER_ACCEPT], (error, results) => {
             if(error) {
                 throw error;
@@ -235,7 +235,7 @@ exports.transaction_machine_accept = function(req, res) {
         var previoushash = results.rows.previoushash;
 
         // Insert all given entries into Transaction table
-        client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiver, previoushash, type)' +
+        client.query('INSERT INTO transactions(senderpubkey, cupqrcode, inserttime, signature, receiverpubkey, previoushash, type)' +
         'VALUES ($1, $2, $3, $4, $5, $6, $7)', [customerpubkey, cupqrcode, timestamp, machinesignature, machinepubkey, previoushash, transactionTypes.MACHINE_TAKEN], (error, results) => {
             if(error) {
                 throw error;
