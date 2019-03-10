@@ -125,7 +125,10 @@ client.connect();
     var requestValid = crypto.crypto.verifySignature(hash,customerSignatureBytes,senderPublicKeyBytes)
 
     // Stop if request is invalid
-    if(!requestValid) return res.status(500).send("Request invalid");
+    if(!requestValid) {
+        console.log("Request not valid")
+        return res.status(500).send("Request invalid")
+    }
 
     // Do crypto stuff
     var hash = new Buffer(JSum.digest({
