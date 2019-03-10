@@ -251,7 +251,7 @@ exports.transaction_generate_hash = function(req, res) {
     console.log(hash);
 
     // Send back hash
-    res.status(201).json(hash);
+    res.status(201).json({hash:hash});
 };
 
  async function pushNotification(senderPublicKey, receiverPublicKey, timestamp, cupqrcode, previousHash, signature, type) {
