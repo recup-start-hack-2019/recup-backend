@@ -280,20 +280,37 @@ exports.transaction_generate_hash = function(req, res) {
     note.badge = 3;
     note.sound = "ping.aiff";
     note.alert = "\uD83D\uDCE7 \u2709 Please confirm transaction :)";
-    note.payload = {
-        "acceptTX": {
-            'senderPublicKey': senderPublicKey,
-            'receiverPublicKey': receiverPublicKey,
-            'cupqrcode': cupqrcode,
-            'timestamp': timestamp,
-            'previousHash': previousHash,
-            'signature': signature,
-            'type': type
+
+    if(type == 1){
+        note.payload = {
+            "acceptTX": {
+                'senderPublicKey': senderPublicKey,
+                'receiverPublicKey': receiverPublicKey,
+                'cupqrcode': cupqrcode,
+                'timestamp': timestamp,
+                'previousHash': previousHash,
+                'signature': signature,
+                'type': type
+            }
         }
-    };
+    } else if (type==2){
+        note.payload = {
+            "returnTX": {
+                'senderPublicKey': senderPublicKey,
+                'receiverPublicKey': receiverPublicKey,
+                'cupqrcode': cupqrcode,
+                'timestamp': timestamp,
+                'previousHash': previousHash,
+                'signature': signature,
+                'type': type
+            }
+        };
+    }
+    
     note.topic = process.env.BUNDLE_ID;
 
     apnProvider.send(note, deviceToken).then((result) => {
         
     });
  }
+
