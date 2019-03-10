@@ -160,6 +160,7 @@ client.connect();
             return res.status(201).json('Transaction added for for cup: ' + cupqrcode);
         });
     } catch(e) {
+        console.log(e)
         return res.status(500).json(e);
     }
     
