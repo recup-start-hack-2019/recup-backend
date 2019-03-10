@@ -125,7 +125,7 @@ client.connect();
     var requestValid = crypto.crypto.verifySignature(hash,customerSignatureBytes,senderPublicKeyBytes)
 
     // Stop if request is invalid
-    if(!requestValid) res.status(500).send("Request invalid");
+    if(!requestValid) return res.status(500).send("Request invalid");
 
     // Do crypto stuff
     var hash = new Buffer(JSum.digest({
@@ -154,10 +154,10 @@ client.connect();
             if(error) {
                 throw error;
             }
-            res.status(201).json('Transaction added for for cup: ' + cupqrcode);
+            return res.status(201).json('Transaction added for for cup: ' + cupqrcode);
         });
     } catch(e) {
-        res.status(500).json(e);
+        return res.status(500).json(e);
     }
     
  };
